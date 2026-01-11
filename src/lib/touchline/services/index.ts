@@ -1,0 +1,12 @@
+export { SponsorsService } from './sponsors';
+export { TeamsService } from './teams';
+export { ModelsService } from './models';
+export { DetectionService } from './detection';
+export { TrainingService } from './training';
+export { MetricsService } from './metrics';
+export { ConfigService } from './config';
+export { SocialMediaService } from './socialMedia';
+export { ClubsService } from './clubs';
+export { SeasonsService } from './seasons';
+export { SponsorshipTypesService } from './sponsorshipTypes';
+export { PostTypesService } from './postTypes';
