@@ -1,0 +1,130 @@
+import { useEffect, useState } from "react";
+import { useTouchline } from "./useTouchline";
+import type { Season } from "@/lib/touchline/types";
+
+export function useSeasons() {
+  const { isReady } = useTouchline();
+  const [seasons, setSeasons] = useState<Season[]>([]);
+  const [currentSeasonId, setCurrentSeasonId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const fetchSeasons = async () => {
+    if (!isReady) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await window.api.touchline.sendCommand("seasons.get_all", {});
+
+      if (result.success && result.data) {
+        setSeasons(result.data.seasons || []);
+      } else {
+        throw new Error(result.error || "Failed to fetch seasons");
+      }
+
+      // Fetch current season from config
+      const currentSeasonResult = await window.api.touchline.sendCommand("configs.get", {
+        category: "general",
+        key: "current_season_id"
+      });
+
+      if (currentSeasonResult.success && currentSeasonResult.data?.value) {
+        setCurrentSeasonId(parseInt(currentSeasonResult.data.value));
+      }
+    } catch (err) {
+      console.error("Failed to fetch seasons:", err);
+      setError(err instanceof Error ? err : new Error(String(err)));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createSeason = async (name: string, startDate: string, endDate: string) => {
+    if (!isReady) {
+      throw new Error("Touchline not initialized");
+    }
+
+    try {
+      const result = await window.api.touchline.sendCommand("seasons.create", {
+        name,
+        start_date: startDate,
+        end_date: endDate
+      });
+
+      if (result.success) {
+        await fetchSeasons();
+        return result.data?.season_id;
+      } else {
+        throw new Error(result.error || "Failed to create season");
+      }
+    } catch (err) {
+      console.error("Failed to create season:", err);
+      throw err;
+    }
+  };
+
+  const setCurrentSeason = async (seasonId: number) => {
+    if (!isReady) {
+      throw new Error("Touchline not initialized");
+    }
+
+    try {
+      const result = await window.api.touchline.sendCommand("configs.set", {
+        category: "general",
+        key: "current_season_id",
+        value: seasonId.toString()
+      });
+
+      if (result.success) {
+        setCurrentSeasonId(seasonId);
+        return true;
+      } else {
+        throw new Error(result.error || "Failed to set current season");
+      }
+    } catch (err) {
+      console.error("Failed to set current season:", err);
+      throw err;
+    }
+  };
+
+  const deleteSeason = async (seasonId: number) => {
+    if (!isReady) {
+      throw new Error("Touchline not initialized");
+    }
+
+    try {
+      const result = await window.api.touchline.sendCommand("seasons.delete", {
+        season_id: seasonId
+      });
+
+      if (result.success) {
+        await fetchSeasons();
+        return true;
+      } else {
+        throw new Error(result.error || "Failed to delete season");
+      }
+    } catch (err) {
+      console.error("Failed to delete season:", err);
+      throw err;
+    }
+  };
+
+  useEffect(() => {
+    if (isReady) {
+      fetchSeasons();
+    }
+  }, [isReady]);
+
+  return {
+    seasons,
+    currentSeasonId,
+    loading,
+    error,
+    refetch: fetchSeasons,
+    createSeason,
+    setCurrentSeason,
+    deleteSeason,
+  };
+}
