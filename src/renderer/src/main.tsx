@@ -2,10 +2,14 @@ import "./assets/index.css";
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppLayout } from "@/components/AppLayout";
 import App from "./App";
 import { Teams } from "@/pages/Teams";
+import { TeamsManagement } from "@/pages/TeamsManagement";
+import { TeamMetrics } from "@/pages/TeamMetrics";
+import { NewDetection } from "@/pages/NewDetection";
+import { DetectionResults } from "@/pages/DetectionResults";
 import { Settings } from "@/pages/Settings";
 import { GeneralSettings } from "@/pages/GeneralSettings";
 import { SeasonManagement } from "@/pages/SeasonManagement";
@@ -23,11 +27,15 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <AppLayout>
         <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<Navigate to="/teams" replace />} />
           <Route path="/teams" element={<Teams />} />
-          <Route path="/teams/:teamId" element={<TeamDetails />} />
+          <Route path="/teams/:teamId" element={<TeamMetrics />} />
+          <Route path="/teams/:teamId/new-detection" element={<NewDetection />} />
+          <Route path="/teams/:teamId/detections/:runId" element={<DetectionResults />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/settings/general" element={<GeneralSettings />} />
+          <Route path="/settings/teams" element={<TeamsManagement />} />
+          <Route path="/settings/teams/:teamId" element={<TeamDetails />} />
           <Route path="/settings/seasons" element={<SeasonManagement />} />
           <Route path="/settings/sponsors" element={<SponsorManagement />} />
           <Route path="/settings/sponsorship-types" element={<SponsorshipTypes />} />

@@ -16,7 +16,11 @@ const api = {
     copyToAppData: (filePaths: string[]) =>
       ipcRenderer.invoke('files:copyToAppData', filePaths),
     saveFiles: (files: Array<{ name: string; buffer: ArrayBuffer }>) =>
-      ipcRenderer.invoke('files:saveFiles', files)
+      ipcRenderer.invoke('files:saveFiles', files),
+    getLocalFile: (filePath: string) =>
+      ipcRenderer.invoke('files:getLocalFile', filePath),
+    getVideoPath: (filePath: string) =>
+      ipcRenderer.invoke('files:getVideoPath', filePath)
   }
 }
 

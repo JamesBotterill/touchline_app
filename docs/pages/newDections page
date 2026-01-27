@@ -1,0 +1,29 @@
+Detections Page:
+
+Select the season:
+
+Add a file: this will be a video or image file to be used in the detection.
+
+Social Media Context:
+
+Chosse the platform from a list of added social networks (required)
+
+Choose content type from the types associated with the selected network, these it should only show the types for the network (required)
+
+Post type (optional)
+
+Engagement Metrics - views, likes, comments, shares, saves
+
+Advanced options: enabled if device supports 
+
+Multi-resolution TTA - it default scales comma-sperated (0.8, 1.0, 1.2)
+
+Adaptive Resolution Selections:
+
+Performance Options (on by default)
+
+Optimization cache 
+
+Memory Optimizations
+
+Start Detections button - this will trigger the detection following the DECTIONS_SETTINGS and navigation to a dectionsRun screen  which will show a progress bar and then a detection results page for the detection that's be ran (todo do not implement now)

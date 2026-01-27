@@ -119,6 +119,7 @@ class TouchlineMainProcess {
           env: {
             ...process.env,
             PYTHONUNBUFFERED: "1",
+            TOUCHLINE_DB_PATH: dbPath,
           },
         });
 
@@ -291,7 +292,9 @@ export function setupTouchlineIPC(): void {
         if (!touchlineInstance) {
           throw new Error("Touchline not initialized");
         }
+        console.log(`[TouchlineIPC] Sending command: ${command}`, data);
         const result = await touchlineInstance.sendCommand(command, data);
+        console.log(`[TouchlineIPC] Command ${command} result:`, JSON.stringify(result, null, 2));
         return { success: true, data: result };
       } catch (error) {
         console.error("Touchline command error:", error);

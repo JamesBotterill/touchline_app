@@ -59,7 +59,7 @@ export function Settings() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Link to="/teams">
+            <Link to="/settings/teams">
               <Button variant="outline" size="sm">
                 Configure
               </Button>

@@ -229,6 +229,14 @@ export function TeamDetails() {
     setSaveError(null);
 
     try {
+      console.log("Assigning model:", {
+        team_id: parseInt(teamId),
+        model_id: parseInt(selectedModelId),
+        season_id: parseInt(selectedModelSeasonId),
+        selectedModelId,
+        selectedModelSeasonId
+      });
+
       const result = await window.api.touchline.sendCommand("teams.assign_model", {
         team_id: parseInt(teamId),
         model_id: parseInt(selectedModelId),
@@ -303,8 +311,8 @@ export function TeamDetails() {
     return (
       <div className="space-y-8">
         <div>
-          <Button variant="ghost" onClick={() => navigate("/teams")}>
-            ← Back to Teams
+          <Button variant="ghost" onClick={() => navigate("/settings/teams")}>
+            ← Back to Teams Management
           </Button>
           <h2 className="text-3xl font-bold tracking-tight mt-4">Team Details</h2>
         </div>
@@ -319,8 +327,8 @@ export function TeamDetails() {
     return (
       <div className="space-y-8">
         <div>
-          <Button variant="ghost" onClick={() => navigate("/teams")}>
-            ← Back to Teams
+          <Button variant="ghost" onClick={() => navigate("/settings/teams")}>
+            ← Back to Teams Management
           </Button>
           <h2 className="text-3xl font-bold tracking-tight mt-4">Team Details</h2>
         </div>
@@ -329,8 +337,8 @@ export function TeamDetails() {
             <p className="text-sm text-destructive">
               {error?.message || "Team not found"}
             </p>
-            <Button onClick={() => navigate("/teams")} className="mt-4">
-              Back to Teams
+            <Button onClick={() => navigate("/settings/teams")} className="mt-4">
+              Back to Teams Management
             </Button>
           </CardContent>
         </Card>
@@ -341,8 +349,8 @@ export function TeamDetails() {
   return (
     <div className="space-y-8">
       <div>
-        <Button variant="ghost" onClick={() => navigate("/teams")}>
-          ← Back to Teams
+        <Button variant="ghost" onClick={() => navigate("/settings/teams")}>
+          ← Back to Teams Management
         </Button>
         <h2 className="text-3xl font-bold tracking-tight mt-4">{team.name}</h2>
         <p className="text-muted-foreground">
@@ -577,7 +585,7 @@ export function TeamDetails() {
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {models.map((model) => (
-              <Card key={model.id}>
+              <Card key={`${model.id}-${model.season_id}`}>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span>{model.name}</span>

@@ -8,7 +8,6 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { name: "Dashboard", icon: "📊", path: "/" },
   { name: "Teams", icon: "👥", path: "/teams" },
   { name: "Sponsors", icon: "🏷️", path: "/sponsors" },
   { name: "Settings", icon: "⚙️", path: "/settings" },

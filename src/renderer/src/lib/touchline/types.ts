@@ -181,10 +181,19 @@ export interface DetectionRun {
   team_id: number;
   season_id: number;
   input_path: string;
+  input_file: string;
   output_path?: string;
   detection_count: number;
   processing_time: number;
   created_at: string;
+  detection_date?: string;
+  social_platform_id?: number;
+  platform_name?: string;
+  social_content_type_id?: number;
+  post_type_id?: number;
+  total_value?: number;
+  metrics?: any;  // Can be JSON string or parsed array
+  social_metrics_data?: any;  // Can be JSON string or parsed object
 }
 
 export interface EngagementMetrics {
